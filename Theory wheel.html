@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theory Selection Wheel</title>
+    <title>Theory selection wheel</title>
     <style>
         * {
             margin: 0;
@@ -172,53 +172,53 @@
 </head>
 <body>
     <div class="container">
-        <h1>Theory Selection Wheel</h1>
+        <h1>Theory selection wheel</h1>
         <p class="instructions">Spin the wheel to randomly select your theoretical framework for the discussion assignment.</p>
         
         <div class="wheel-container">
             <canvas id="wheelCanvas" width="400" height="400"></canvas>
-            <button class="spin-button" id="spinBtn">Spin the Wheel</button>
+            <button class="spin-button" id="spinBtn">Spin the wheel</button>
         </div>
 
         <div class="result-box" id="resultBox">
             <div class="result-theory" id="resultTheory"></div>
-            <button class="toggle-reference" id="toggleRef">Show Reference</button>
+            <button class="toggle-reference" id="toggleRef">Show reference</button>
             <div class="reference" id="reference"></div>
             <div class="next-steps">
-                <strong>Next Steps:</strong> Read the systematic review for your selected theory, then develop your research scenario and propose two different research designs that could investigate your question using this theoretical framework.
+                <strong>Next steps:</strong> Read the systematic review for your selected theory, then develop your research scenario and propose two different research designs that could investigate your question using this theoretical framework.
             </div>
         </div>
 
         <div class="theory-list">
-            <h2>Theory List and References</h2>
+            <h2>Theory list and references</h2>
             
             <div class="theory-item">
-                <div class="theory-name">Critical Theory</div>
+                <div class="theory-name">Critical theory</div>
                 <div class="theory-reference">Park, S. E., Shappell, E., Shrivastava, R., Atchison, C., Mahdavi, L., Hammoud, M. M., Dalal, R. S., & Gonzalo, J. D. (2025). A rapid review of critical theory in health professions education. <em>BMC Medical Education, 25</em>(1), Article 257. <a href="https://doi.org/10.1186/s12909-025-06979-1" target="_blank">https://doi.org/10.1186/s12909-025-06979-1</a></div>
             </div>
 
             <div class="theory-item">
-                <div class="theory-name">Diffusion of Innovations</div>
+                <div class="theory-name">Diffusion of innovations</div>
                 <div class="theory-reference">Greenhalgh, T., Robert, G., Macfarlane, F., Bate, P., & Kyriakidou, O. (2004). Diffusion of innovations in service organizations: Systematic review and recommendations. <em>Milbank Quarterly, 82</em>(4), 581–629. <a href="https://doi.org/10.1111/j.0887-378X.2004.00325.x" target="_blank">https://doi.org/10.1111/j.0887-378X.2004.00325.x</a></div>
             </div>
 
             <div class="theory-item">
-                <div class="theory-name">Prospect Theory</div>
+                <div class="theory-name">Prospect theory</div>
                 <div class="theory-reference">Barberis, N. C. (2013). Thirty years of Prospect Theory in economics: A review and assessment. <em>Journal of Economic Perspectives, 27</em>(1), 173–196. <a href="https://doi.org/10.1257/jep.27.1.173" target="_blank">https://doi.org/10.1257/jep.27.1.173</a></div>
             </div>
 
             <div class="theory-item">
-                <div class="theory-name">Social Cognitive Theory</div>
+                <div class="theory-name">Social cognitive theory</div>
                 <div class="theory-reference">Young, M. D., Plotnikoff, R. C., Collins, C. E., Callister, R., & Morgan, P. J. (2014). Social cognitive theory and physical activity: A systematic review and meta-analysis. <em>Obesity Reviews, 15</em>(12), 983–995. <a href="https://doi.org/10.1111/obr.12225" target="_blank">https://doi.org/10.1111/obr.12225</a></div>
             </div>
 
             <div class="theory-item">
-                <div class="theory-name">Stakeholder Theory</div>
+                <div class="theory-name">Stakeholder theory</div>
                 <div class="theory-reference">Mahajan, R., Lim, W. M., Sareen, M., Kumar, S., & Panwar, R. (2023). Stakeholder theory. <em>Journal of Business Research, 166</em>, Article 114104. <a href="https://doi.org/10.1016/j.jbusres.2023.114104" target="_blank">https://doi.org/10.1016/j.jbusres.2023.114104</a></div>
             </div>
 
             <div class="theory-item">
-                <div class="theory-name">Technology Acceptance Model</div>
+                <div class="theory-name">Technology acceptance model</div>
                 <div class="theory-reference">Rahimi, B., Nadri, H., Afshar, H. L., & Timpka, T. (2018). A systematic review of the technology acceptance model in health informatics. <em>Applied Clinical Informatics, 9</em>(3), 604–634. <a href="https://doi.org/10.1055/s-0038-1668091" target="_blank">https://doi.org/10.1055/s-0038-1668091</a></div>
             </div>
         </div>
@@ -227,32 +227,32 @@
     <script>
         const theories = [
             {
-                name: "Social Cognitive Theory",
+                name: "Social cognitive theory",
                 color: "#C41E3A",
                 reference: "Young, M. D., Plotnikoff, R. C., Collins, C. E., Callister, R., & Morgan, P. J. (2014). Social cognitive theory and physical activity: A systematic review and meta-analysis. <em>Obesity Reviews, 15</em>(12), 983–995. <a href='https://doi.org/10.1111/obr.12225' target='_blank'>https://doi.org/10.1111/obr.12225</a>"
             },
             {
-                name: "Prospect Theory",
+                name: "Prospect theory",
                 color: "#E69138",
                 reference: "Barberis, N. C. (2013). Thirty years of Prospect Theory in economics: A review and assessment. <em>Journal of Economic Perspectives, 27</em>(1), 173–196. <a href='https://doi.org/10.1257/jep.27.1.173' target='_blank'>https://doi.org/10.1257/jep.27.1.173</a>"
             },
             {
-                name: "Diffusion of Innovations",
+                name: "Diffusion of innovations",
                 color: "#2A9D8F",
                 reference: "Greenhalgh, T., Robert, G., Macfarlane, F., Bate, P., & Kyriakidou, O. (2004). Diffusion of innovations in service organizations: Systematic review and recommendations. <em>Milbank Quarterly, 82</em>(4), 581–629. <a href='https://doi.org/10.1111/j.0887-378X.2004.00325.x' target='_blank'>https://doi.org/10.1111/j.0887-378X.2004.00325.x</a>"
             },
             {
-                name: "Critical Theory",
+                name: "Critical theory",
                 color: "#264653",
                 reference: "Park, S. E., Shappell, E., Shrivastava, R., Atchison, C., Mahdavi, L., Hammoud, M. M., Dalal, R. S., & Gonzalo, J. D. (2025). A rapid review of critical theory in health professions education. <em>BMC Medical Education, 25</em>(1), Article 257. <a href='https://doi.org/10.1186/s12909-025-06979-1' target='_blank'>https://doi.org/10.1186/s12909-025-06979-1</a>"
             },
             {
-                name: "Technology Acceptance Model",
+                name: "Technology acceptance model",
                 color: "#D4658C",
                 reference: "Rahimi, B., Nadri, H., Afshar, H. L., & Timpka, T. (2018). A systematic review of the technology acceptance model in health informatics. <em>Applied Clinical Informatics, 9</em>(3), 604–634. <a href='https://doi.org/10.1055/s-0038-1668091' target='_blank'>https://doi.org/10.1055/s-0038-1668091</a>"
             },
             {
-                name: "Stakeholder Theory",
+                name: "Stakeholder theory",
                 color: "#7B68A6",
                 reference: "Mahajan, R., Lim, W. M., Sareen, M., Kumar, S., & Panwar, R. (2023). Stakeholder theory. <em>Journal of Business Research, 166</em>, Article 114104. <a href='https://doi.org/10.1016/j.jbusres.2023.114104' target='_blank'>https://doi.org/10.1016/j.jbusres.2023.114104</a>"
             }
@@ -428,4 +428,5 @@
         drawWheel(currentRotation);
     </script>
 </body>
+
 </html>
