@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory Selection Wheel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        #wheelCanvas {
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .spin-button {
+            background: linear-gradient(135deg, #C41E3A 0%, #A41830 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
+        }
+        .spin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+        }
+        .spin-button:active {
+            transform: translateY(0);
+        }
+        .spin-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .result-box {
+            display: none;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #C41E3A15 0%, #A4183015 100%);
+            border-left: 5px solid #C41E3A;
+            border-radius: 8px;
+        }
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .result-theory {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .toggle-reference {
+            background: #C41E3A;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .toggle-reference:hover {
+            background: #A41830;
+        }
+        .reference {
+            display: none;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .reference.show {
+            display: block;
+        }
+        .reference a {
+            color: #C41E3A;
+            text-decoration: none;
+        }
+        .reference a:hover {
+            text-decoration: underline;
+        }
+        .next-steps {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+        }
+        .next-steps strong {
+            color: #856404;
+        }
+        .theory-list {
+            margin-top: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .theory-list h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #C41E3A;
+            padding-bottom: 10px;
+        }
+        .theory-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .theory-name {
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .theory-reference {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Theory Selection Wheel</h1>
+        <p class="instructions">Spin the wheel to randomly select your theoretical framework for the discussion assignment.</p>
+        
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+            <button class="spin-button" id="spinBtn">Spin the Wheel</button>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-theory" id="resultTheory"></div>
+            <button class="toggle-reference" id="toggleRef">Show Reference</button>
+            <div class="reference" id="reference"></div>
+            <div class="next-steps">
+                <strong>Next Steps:</strong> Read the systematic review for your selected theory, then develop your research scenario and propose two different research designs that could investigate your question using this theoretical framework.
+            </div>
+        </div>
+
+        <div class="theory-list">
+            <h2>Theory List and References</h2>
+            
+            <div class="theory-item">
+                <div class="theory-name">Critical Theory</div>
+                <div class="theory-reference">Park, S. E., Shappell, E., Shrivastava, R., Atchison, C., Mahdavi, L., Hammoud, M. M., Dalal, R. S., & Gonzalo, J. D. (2025). A rapid review of critical theory in health professions education. <em>BMC Medical Education, 25</em>(1), Article 257. <a href="https://doi.org/10.1186/s12909-025-06979-1" target="_blank">https://doi.org/10.1186/s12909-025-06979-1</a></div>
+            </div>
+
+            <div class="theory-item">
+                <div class="theory-name">Diffusion of Innovations</div>
+                <div class="theory-reference">Greenhalgh, T., Robert, G., Macfarlane, F., Bate, P., & Kyriakidou, O. (2004). Diffusion of innovations in service organizations: Systematic review and recommendations. <em>Milbank Quarterly, 82</em>(4), 581–629. <a href="https://doi.org/10.1111/j.0887-378X.2004.00325.x" target="_blank">https://doi.org/10.1111/j.0887-378X.2004.00325.x</a></div>
+            </div>
+
+            <div class="theory-item">
+                <div class="theory-name">Prospect Theory</div>
+                <div class="theory-reference">Barberis, N. C. (2013). Thirty years of Prospect Theory in economics: A review and assessment. <em>Journal of Economic Perspectives, 27</em>(1), 173–196. <a href="https://doi.org/10.1257/jep.27.1.173" target="_blank">https://doi.org/10.1257/jep.27.1.173</a></div>
+            </div>
+
+            <div class="theory-item">
+                <div class="theory-name">Social Cognitive Theory</div>
+                <div class="theory-reference">Young, M. D., Plotnikoff, R. C., Collins, C. E., Callister, R., & Morgan, P. J. (2014). Social cognitive theory and physical activity: A systematic review and meta-analysis. <em>Obesity Reviews, 15</em>(12), 983–995. <a href="https://doi.org/10.1111/obr.12225" target="_blank">https://doi.org/10.1111/obr.12225</a></div>
+            </div>
+
+            <div class="theory-item">
+                <div class="theory-name">Stakeholder Theory</div>
+                <div class="theory-reference">Mahajan, R., Lim, W. M., Sareen, M., Kumar, S., & Panwar, R. (2023). Stakeholder theory. <em>Journal of Business Research, 166</em>, Article 114104. <a href="https://doi.org/10.1016/j.jbusres.2023.114104" target="_blank">https://doi.org/10.1016/j.jbusres.2023.114104</a></div>
+            </div>
+
+            <div class="theory-item">
+                <div class="theory-name">Technology Acceptance Model</div>
+                <div class="theory-reference">Rahimi, B., Nadri, H., Afshar, H. L., & Timpka, T. (2018). A systematic review of the technology acceptance model in health informatics. <em>Applied Clinical Informatics, 9</em>(3), 604–634. <a href="https://doi.org/10.1055/s-0038-1668091" target="_blank">https://doi.org/10.1055/s-0038-1668091</a></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const theories = [
+            {
+                name: "Social Cognitive Theory",
+                color: "#C41E3A",
+                reference: "Young, M. D., Plotnikoff, R. C., Collins, C. E., Callister, R., & Morgan, P. J. (2014). Social cognitive theory and physical activity: A systematic review and meta-analysis. <em>Obesity Reviews, 15</em>(12), 983–995. <a href='https://doi.org/10.1111/obr.12225' target='_blank'>https://doi.org/10.1111/obr.12225</a>"
+            },
+            {
+                name: "Prospect Theory",
+                color: "#E69138",
+                reference: "Barberis, N. C. (2013). Thirty years of Prospect Theory in economics: A review and assessment. <em>Journal of Economic Perspectives, 27</em>(1), 173–196. <a href='https://doi.org/10.1257/jep.27.1.173' target='_blank'>https://doi.org/10.1257/jep.27.1.173</a>"
+            },
+            {
+                name: "Diffusion of Innovations",
+                color: "#2A9D8F",
+                reference: "Greenhalgh, T., Robert, G., Macfarlane, F., Bate, P., & Kyriakidou, O. (2004). Diffusion of innovations in service organizations: Systematic review and recommendations. <em>Milbank Quarterly, 82</em>(4), 581–629. <a href='https://doi.org/10.1111/j.0887-378X.2004.00325.x' target='_blank'>https://doi.org/10.1111/j.0887-378X.2004.00325.x</a>"
+            },
+            {
+                name: "Critical Theory",
+                color: "#264653",
+                reference: "Park, S. E., Shappell, E., Shrivastava, R., Atchison, C., Mahdavi, L., Hammoud, M. M., Dalal, R. S., & Gonzalo, J. D. (2025). A rapid review of critical theory in health professions education. <em>BMC Medical Education, 25</em>(1), Article 257. <a href='https://doi.org/10.1186/s12909-025-06979-1' target='_blank'>https://doi.org/10.1186/s12909-025-06979-1</a>"
+            },
+            {
+                name: "Technology Acceptance Model",
+                color: "#D4658C",
+                reference: "Rahimi, B., Nadri, H., Afshar, H. L., & Timpka, T. (2018). A systematic review of the technology acceptance model in health informatics. <em>Applied Clinical Informatics, 9</em>(3), 604–634. <a href='https://doi.org/10.1055/s-0038-1668091' target='_blank'>https://doi.org/10.1055/s-0038-1668091</a>"
+            },
+            {
+                name: "Stakeholder Theory",
+                color: "#7B68A6",
+                reference: "Mahajan, R., Lim, W. M., Sareen, M., Kumar, S., & Panwar, R. (2023). Stakeholder theory. <em>Journal of Business Research, 166</em>, Article 114104. <a href='https://doi.org/10.1016/j.jbusres.2023.114104' target='_blank'>https://doi.org/10.1016/j.jbusres.2023.114104</a>"
+            }
+        ];
+
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const spinBtn = document.getElementById('spinBtn');
+        const resultBox = document.getElementById('resultBox');
+        const resultTheory = document.getElementById('resultTheory');
+        const reference = document.getElementById('reference');
+        const toggleRef = document.getElementById('toggleRef');
+
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function drawWheel(rotation) {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 180;
+            const segmentAngle = (2 * Math.PI) / theories.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw segments
+            theories.forEach((theory, index) => {
+                const startAngle = rotation + (index * segmentAngle);
+                const endAngle = startAngle + segmentAngle;
+
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = theory.color;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                
+                const angle = startAngle + segmentAngle / 2;
+                ctx.rotate(angle);
+                
+                const leftSide = (angle > Math.PI / 2 && angle < 3 * Math.PI / 2);
+                if (leftSide) {
+                    ctx.rotate(Math.PI);
+                }
+                
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 4;
+                
+                const words = theory.name.split(' ');
+                const lines = [];
+                
+                if (words.length <= 2) {
+                    lines.push(theory.name);
+                } else if (words.length === 3) {
+                    lines.push(words.slice(0, 2).join(' '));
+                    lines.push(words[2]);
+                } else {
+                    lines.push(words.slice(0, 2).join(' '));
+                    lines.push(words.slice(2).join(' '));
+                }
+                
+                const lineHeight = 15;
+                const totalHeight = lines.length * lineHeight;
+                const textDistance = leftSide ? -radius * 0.58 : radius * 0.58;
+                const startY = -totalHeight / 2 + lineHeight / 2;
+                
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, textDistance, startY + (i * lineHeight));
+                });
+                
+                ctx.restore();
+            });
+
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
+            ctx.fillStyle = '#264653';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Draw "SPIN" text
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('SPIN', centerX, centerY);
+
+            // Draw pointer
+            ctx.beginPath();
+            ctx.moveTo(centerX + radius + 15, centerY);
+            ctx.lineTo(centerX + radius - 5, centerY - 15);
+            ctx.lineTo(centerX + radius - 5, centerY + 15);
+            ctx.closePath();
+            ctx.fillStyle = '#C41E3A';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            spinBtn.disabled = true;
+            resultBox.classList.remove('show');
+            reference.classList.remove('show');
+            toggleRef.textContent = 'Show Reference';
+
+            const spinDuration = 3000;
+            const minSpins = 5;
+            const extraRotation = minSpins * 2 * Math.PI + Math.random() * 2 * Math.PI;
+            const startTime = Date.now();
+            const startRotation = currentRotation;
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                
+                currentRotation = startRotation + extraRotation * easeOut;
+                drawWheel(currentRotation);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                    showResult();
+                }
+            }
+
+            animate();
+        }
+
+        function showResult() {
+            const segmentAngle = (2 * Math.PI) / theories.length;
+            const normalizedRotation = currentRotation % (2 * Math.PI);
+            const pointerAngle = 0;
+            const selectedIndex = Math.floor((theories.length - (normalizedRotation - pointerAngle) / segmentAngle) % theories.length);
+            const selectedTheory = theories[selectedIndex];
+
+            resultTheory.textContent = `Your Selected Theory: ${selectedTheory.name}`;
+            reference.innerHTML = selectedTheory.reference;
+            resultBox.classList.add('show');
+        }
+
+        toggleRef.addEventListener('click', () => {
+            if (reference.classList.contains('show')) {
+                reference.classList.remove('show');
+                toggleRef.textContent = 'Show Reference';
+            } else {
+                reference.classList.add('show');
+                toggleRef.textContent = 'Hide Reference';
+            }
+        });
+
+        spinBtn.addEventListener('click', spinWheel);
+
+        // Draw initial wheel
+        drawWheel(currentRotation);
+    </script>
+</body>
+</html>
